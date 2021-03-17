@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+    <!-- Funciones -->
+    <!-- Convertir formato DD MMMMMMMMM YY a DD_MM_YY -->
+    <category>
+        <pattern> CONVERTIR * A DD_MM_YY </pattern>
+        <template>
+            <think>
+                <set var="resultado"><srai> SELECTITEM 1 IN <star/></srai>_<map name="months"><srai> SELECTITEM 2 IN <star/></srai></map>_<srai> SELECTITEM 3 IN <star/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Muestra el valor almacenado en name="fecha" -->
+    <category>
+        <pattern> FECHA </pattern>
+        <template><get name="fecha"/></template>
+    </category>
+
+    <!-- Comprobar si hay horas libres en un dia de semana -->
+    <category>
+        <pattern> LIBRE PROXIMO * </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE ON <star/></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres por la manyana en un dia de semana -->
+    <category>
+        <pattern> LIBRE POR LA MANYANA PROXIMO * </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE ON <star/></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE POR LA MANYANA <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres por la manyana en un dia de semana -->
+    <category>
+        <pattern> LIBRE POR LA TARDE PROXIMO * </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE ON <star/></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE POR LA TARDE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres hoy -->
+    <category>
+        <pattern> LIBRE HOY </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE </srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres por la manyana hoy -->
+    <category>
+        <pattern> LIBRE POR LA MANYANA HOY </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE </srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE POR LA MANYANA <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres por la tarde hoy -->
+    <category>
+        <pattern> LIBRE POR LA TARDE HOY </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE </srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE POR LA TARDE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres el dia de manyana -->
+    <category>
+        <pattern> LIBRE EL DIA DE MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> DATE </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres por la manyana el dia de manyana -->
+    <category>
+        <pattern> LIBRE POR LA MANYANA EL DIA DE MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> DATE </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE POR LA MANYANA <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres por la tarde el dia de manyana -->
+    <category>
+        <pattern> LIBRE POR LA TARDE EL DIA DE MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> DATE </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE POR LA TARDE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres el dia de pasado manyana -->
+    <category>
+        <pattern> LIBRE EL DIA DE PASADO MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> TOMORROWDATE <srai> DATE </srai> </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres por la manyana el dia de pasado manyana -->
+    <category>
+        <pattern> LIBRE POR LA MANYANA EL DIA DE PASADO MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> TOMORROWDATE <srai> DATE </srai> </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE POR LA MANYANA <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres por la tarde el dia de pasado manyana -->
+    <category>
+        <pattern> LIBRE POR LA TARDE EL DIA DE PASADO MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> TOMORROWDATE <srai> DATE </srai> </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE POR LA TARDE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres un dia de semana a partir de una hora -->
+    <category>
+        <pattern> LIBRE PROXIMO * A PARTIR DE LAS * </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE ON <star index="1"/></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="lista_horas"><srai> LIST OF DAY <get name="fecha"/></srai></set>
+                <set var="lista_horas"><srai> SUBLIST FROM <srai> ORDINAL <star index="2"/> </srai> TO 21 OF <get var="lista_horas"/></srai></set>
+                <set var="iterador"><srai> ITERATE <get var="lista_horas"/></srai></set>
+                <condition var="iterador">
+                    <li value="$">
+                        <set var="resultado"> FALSE </set>
+                    </li>
+                    <li value="LIBRE">
+                        <set var="resultado"> TRUE </set>
+                    </li>
+                    <li>
+                        <set var="iterador"><srai> NEXT </srai></set>
+                        <loop/>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles en un dia de semana -->
+    <category>
+        <pattern> HORAS LIBRES PROXIMO * </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE ON <star/></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles por la manyana en un dia de semana -->
+    <category>
+        <pattern> HORAS LIBRES POR LA MANYANA PROXIMO * </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE ON <star/></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES POR LA MANYANA <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles por la manyana en un dia de semana -->
+    <category>
+        <pattern> HORAS LIBRES POR LA TARDE PROXIMO * </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE ON <star/></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES POR LA TARDE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles hoy -->
+    <category>
+        <pattern> HORAS LIBRES HOY </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE </srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles por la manyana hoy -->
+    <category>
+        <pattern> HORAS LIBRES POR LA MANYANA HOY </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE </srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES POR LA MANYANA <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles por la tarde hoy -->
+    <category>
+        <pattern> HORAS LIBRES POR LA TARDE HOY </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE </srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES POR LA TARDE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles el dia de manyana -->
+    <category>
+        <pattern> HORAS LIBRES EL DIA DE MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> DATE </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles por la manyana el dia de manyana -->
+    <category>
+        <pattern> HORAS LIBRES POR LA MANYANA EL DIA DE MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> DATE </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES POR LA MANYANA <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles por la tarde el dia de manyana -->
+    <category>
+        <pattern> HORAS LIBRES POR LA TARDE EL DIA DE MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> DATE </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES POR LA TARDE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles el dia de pasado manyana -->
+    <category>
+        <pattern> HORAS LIBRES EL DIA DE PASADO MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> TOMORROWDATE <srai> DATE </srai> </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles por la manyana el dia de pasado manyana -->
+    <category>
+        <pattern> HORAS LIBRES POR LA MANYANA EL DIA DE PASADO MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> TOMORROWDATE <srai> DATE </srai> </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES POR LA MANYANA <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles por la tarde el dia de pasado manyana -->
+    <category>
+        <pattern> HORAS LIBRES POR LA TARDE EL DIA DE PASADO MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> TOMORROWDATE <srai> DATE </srai> </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> HORAS LIBRES POR LA TARDE <get name="fecha"/></srai></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles un dia de semana a partir de una hora -->
+    <category>
+        <pattern> HORAS LIBRES PROXIMO * A PARTIR DE LAS * </pattern>
+        <template>
+            <think>
+                <set var="disponibilidad"><srai> LIBRE PROXIMO <star index="1"/></srai></set>
+                <condition var="disponibilidad">
+                    <li value="FALSE">
+                        <set var="resultado"> EMPTYLIST </set>
+                    </li>
+                    <li>
+                        <set var="dia"><srai> DATE ON <star index="1"/></srai></set>
+                        <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                        <set var="lista_horas"><srai> LIST OF DAY <get name="fecha"/></srai></set>
+                        <set var="lista_horas"><srai> SUBLIST FROM <srai> ORDINAL <star index="2"/> </srai> TO 21 OF <get var="lista_horas"/></srai></set>
+                        <set var="iterador"><srai> ITERATE <get var="lista_horas"/></srai></set>
+                        <set var="resultado"> </set>
+                        <set var="contador"><map name="predecessor"><srai> ORDINAL <star index="2"/> </srai></map></set>
+
+                        <condition var="iterador">
+                            <li value="$"></li>
+                            <li value="LIBRE">
+                                <set var="hora"><srai> <get var="contador"/> A HORA </srai></set>
+                                <set var="resultado"><get var="resultado"/> <get var="hora"/></set>
+                                <set var="contador"><map name="successor"><get var="contador"/></map></set>
+                                <set var="iterador"><srai> NEXT </srai></set>
+                                <loop/>
+                            </li>
+                            <li>
+                                <set var="contador"><map name="successor"><get var="contador"/></map></set>
+                                <set var="iterador"><srai> NEXT </srai></set>
+                                <loop/>
+                            </li>
+                        </condition>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Reglas conversacionales -->
+    <category>
+        <pattern> ^ [CITA RESERV+] ^ PARA EL [PROXIMO SIGUIENTE] * </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE ON <star index="3"/></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE PROXIMO <star index="3"/> </srai></set>
+                <condition var="resultado">
+                    <li value="FALSE">
+                        <set var="resultado"> Lo siento pero ese dia esta ocupado, quiere otro dia? </set>
+                        <set name="topic">cita_no_disponible_nivel</set>
+                    </li>
+                    <li>
+                        <set var="resultado"> El dia dispone de horas libres, quiere verlas? </set>
+                        <set name="topic">cita_disponible_nivel</set>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <category>
+        <pattern> ^ [CITA RESERV+] ^ PARA HOY </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> DATE </srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE <get name="fecha"/> </srai></set>
+                <condition var="resultado">
+                    <li value="FALSE">
+                        <set var="resultado"> Lo siento pero ese dia esta ocupado, quiere otro dia? </set>
+                        <set name="topic">cita_no_disponible_nivel</set>
+                    </li>
+                    <li>
+                        <set var="resultado"> El dia dispone de horas libres, quiere verlas? </set>
+                        <set name="topic">cita_disponible_nivel</set>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <category>
+        <pattern> ^ [CITA RESERV+] ^ PARA MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> DATE </srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE <get name="fecha"/> </srai></set>
+                <condition var="resultado">
+                    <li value="FALSE">
+                        <set var="resultado"> Lo siento pero ese dia esta ocupado, quiere otro dia? </set>
+                        <set name="topic">cita_no_disponible_nivel</set>
+                    </li>
+                    <li>
+                        <set var="resultado"> El dia dispone de horas libres, quiere verlas? </set>
+                        <set name="topic">cita_disponible_nivel</set>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <category>
+        <pattern> ^ [CITA RESERV+] ^ PARA PASADO MANYANA </pattern>
+        <template>
+            <think>
+                <set var="dia"><srai> TOMORROWDATE <srai> TOMORROWDATE <srai> DATE </srai></srai></srai></set>
+                <set name="fecha"><srai> CONVERTIR <get var="dia"/> A DD_MM_YY </srai></set>
+                <set var="resultado"><srai> LIBRE <get name="fecha"/> </srai></set>
+                <condition var="resultado">
+                    <li value="FALSE">
+                        <set var="resultado"> Lo siento pero ese dia esta ocupado, quiere otro dia? </set>
+                        <set name="topic">cita_no_disponible_nivel</set>
+                    </li>
+                    <li>
+                        <set var="resultado"> El dia dispone de horas libres, quiere verlas? </set>
+                        <set name="topic">cita_disponible_nivel</set>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+</aiml>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+    <!-- Regla 1 -->
+    <category>
+        <pattern> ^ ESTACION ^ ESTAMOS ^ </pattern>
+        <template> Estamos en <srai> SEASON </srai></template>
+    </category>
+
+    <!-- Regla 2 -->
+    <category>
+        <pattern> ^ FASE ^ DIA ESTAMOS ^ </pattern>
+        <template> Es por la <srai> DAY PHASE </srai></template>
+    </category>
+
+    <!-- Regla 3 -->
+    <category>
+        <pattern> ^ DIA ^ DE ^ SEMANA ES * </pattern>
+        <template>
+        <think>
+            <set var="dia"><star index="4"/></set>
+            <condition var="dia">
+                <li value="hoy">
+                    <set var="resultado"> Hoy es <srai> DAY </srai></set>
+                </li>
+                <li value="manyana">
+                    <set var="resultado"> Manyana es <srai> TOMORROW </srai></set>
+                </li>
+                <li value="pasado manyana">
+                    <set var="resultado"> Pasado manyana es <map name="tomorrow_es"><srai> TOMORROW </srai></map></set>
+                </li>
+                <li>
+                    
+                </li>
+            </condition>
+        </think>
+        <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Regla 4 -->
+    <category>
+        <pattern> ^ FECHA ^ [DENTRO EN DE] ^ UNA SEMANA </pattern>
+        <template> Dentro de una semana es <srai> DATE IN 7 DAYS</srai></template>
+    </category>
+
+    <!-- Regla 5 -->
+    <category>
+        <pattern> ^ FECHA ^ PROXIMO <set>weekday_es</set> </pattern>
+        <template> El proximo <star index="3"/> es <srai> DATE ON <star index="3"/> </srai></template>
+    </category>
+
+</aiml>

@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+
+    <!-- Funciones -->
+    <!-- Convertir formato DD_MMMMMMMMM_YY a DD_MM_YY -->
+    <category>
+        <pattern> CONVERTIR * DE * DEL * </pattern>
+        <template>
+            <think>
+                <set var="dia"><star index="1"/></set>
+                <set var="mes"><map name="months"><star index="2"/></map></set>
+                <set var="anyo"><star index="3"/></set>
+            </think>
+            <get var="dia"/>_<get var="mes"/>_<get var="anyo"/>
+        </template>
+    </category>
+
+    <!-- Convertir numero a hora -->
+    <category>
+        <pattern> * A HORA </pattern>
+        <template>
+            <think>
+                <set var="hora_con_cero_delante"><map name="horas_con_cero_delante"><star/></map></set>
+                <condition var="hora_con_cero_delante">
+                    <li value="TRUE">
+                        <set var="resultado"> 0<star/>:00 </set>
+                    </li>
+                    <li>
+                        <set var="resultado"> <star/>:00 </set>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Hora valida (entre las 08:00 y las 20:00) -->
+    <category>
+        <pattern> HORA VALIDA * </pattern>
+        <template>
+            <think>
+                <set var="hora"><map name="predecessor"><srai> ORDINAL <star/> </srai></map></set>
+                <set var="resultado"><map name="hora_valida"><get var="hora"/></map></set>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Primera hora libre de un dia -->
+    <category>
+        <pattern> PRIMERA HORA LIBRE DE * </pattern>
+        <template>
+            <think>
+                <set var="lista_horas"><srai> LIST OF DAY <star/></srai></set>
+                <set var="lista_horas"><srai> SUBLIST FROM 9 TO 21 OF <get var="lista_horas"/></srai></set>
+                <set var="contador">8</set>
+                <set var="iterador"><srai> ITERATE <get var="lista_horas"/></srai></set>
+                <condition var="iterador">
+                    <li value="$">
+                        <set var="resultado"> NULL </set>
+                    </li>
+                    <li value="LIBRE">
+                        <set var="hora"><srai><get var="contador"/> A HORA </srai></set>
+                        <set var="resultado"><get var="hora"/></set>
+                    </li>
+                    <li>
+                        <set var="iterador"><srai> NEXT </srai></set>
+                        <set var="contador"><map name="successor"><get var="contador"/></map></set>
+                        <loop/>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres en un dia -->
+    <category>
+        <pattern> LIBRE * </pattern>
+        <template>
+            <think>
+                <set var="lista_horas"><srai> LIST OF DAY <star/></srai></set>
+                <set var="lista_horas"><srai> SUBLIST FROM 9 TO 21 OF <get var="lista_horas"/></srai></set>
+                <set var="iterador"><srai> ITERATE <get var="lista_horas"/></srai></set>
+
+                <condition var="iterador">
+                    <li value="$">
+                        <set var="resultado"> FALSE </set>
+                    </li>
+                    <li value="LIBRE">
+                        <set var="resultado"> TRUE </set>
+                    </li>
+                    <li>
+                        <set var="iterador"><srai> NEXT </srai></set>
+                        <loop/>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres por la manyana en un dia -->
+    <category>
+        <pattern> LIBRE POR LA MANYANA * </pattern>
+        <template>
+            <think>
+                <set var="lista_horas"><srai> LIST OF DAY <star/></srai></set>
+                <set var="lista_horas"><srai> SUBLIST FROM 9 TO 13 OF <get var="lista_horas"/></srai></set>
+                <set var="iterador"><srai> ITERATE <get var="lista_horas"/></srai></set>
+
+                <condition var="iterador">
+                    <li value="$">
+                        <set var="resultado"> FALSE </set>
+                    </li>
+                    <li value="LIBRE">
+                        <set var="resultado"> TRUE </set>
+                    </li>
+                    <li>
+                        <set var="iterador"><srai> NEXT </srai></set>
+                        <loop/>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Comprobar si hay horas libres por la tarde en un dia -->
+    <category>
+        <pattern> LIBRE POR LA TARDE * </pattern>
+        <template>
+            <think>
+                <set var="lista_horas"><srai> LIST OF DAY <star/></srai></set>
+                <set var="lista_horas"><srai> SUBLIST FROM 14 TO 21 OF <get var="lista_horas"/></srai></set>
+                <set var="iterador"><srai> ITERATE <get var="lista_horas"/></srai></set>
+
+                <condition var="iterador">
+                    <li value="$">
+                        <set var="resultado"> FALSE </set>
+                    </li>
+                    <li value="LIBRE">
+                        <set var="resultado"> TRUE </set>
+                    </li>
+                    <li>
+                        <set var="iterador"><srai> NEXT </srai></set>
+                        <loop/>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles en un dia-->
+    <category>
+        <pattern> HORAS LIBRES * </pattern>
+        <template>
+            <think>
+                <set var="disponibilidad"><srai> LIBRE <star/></srai></set>
+                <condition var="disponibilidad">
+                    <li value="FALSE">
+                        <set var="resultado"> EMPTYLIST </set>
+                    </li>
+                    <li>
+                        <set var="lista_horas"><srai> LIST OF DAY <star/></srai></set>
+                        <set var="lista_horas"><srai> SUBLIST FROM 9 TO 21 OF <get var="lista_horas"/></srai></set>
+                        <set var="iterador"><srai> ITERATE <get var="lista_horas"/></srai></set>
+                        <set var="resultado"> </set>
+                        <set var="contador">8</set>
+
+                        <condition var="iterador">
+                            <li value="$"></li>
+                            <li value="LIBRE">
+                                <set var="hora"><srai> <get var="contador"/> A HORA </srai></set>
+                                <set var="resultado"><get var="resultado"/> <get var="hora"/></set>
+                                <set var="contador"><map name="successor"><get var="contador"/></map></set>
+                                <set var="iterador"><srai> NEXT </srai></set>
+                                <loop/>
+                            </li>
+                            <li>
+                                <set var="contador"><map name="successor"><get var="contador"/></map></set>
+                                <set var="iterador"><srai> NEXT </srai></set>
+                                <loop/>
+                            </li>
+                        </condition>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles por la manyana en un dia-->
+    <category>
+        <pattern> HORAS LIBRES POR LA MANYANA * </pattern>
+        <template>
+            <think>
+                <set var="disponibilidad"><srai> LIBRE POR LA MANYANA <star/></srai></set>
+                <condition var="disponibilidad">
+                    <li value="FALSE">
+                        <set var="resultado"> EMPTYLIST </set>
+                    </li>
+                    <li>
+                        <set var="lista_horas"><srai> LIST OF DAY <star/></srai></set>
+                        <set var="lista_horas"><srai> SUBLIST FROM 9 TO 13 OF <get var="lista_horas"/></srai></set>
+                        <set var="iterador"><srai> ITERATE <get var="lista_horas"/></srai></set>
+                        <set var="resultado"> </set>
+                        <set var="contador">8</set>
+
+                        <condition var="iterador">
+                            <li value="$"></li>
+                            <li value="LIBRE">
+                                <set var="hora"><srai> <get var="contador"/> A HORA </srai></set>
+                                <set var="resultado"><get var="resultado"/> <get var="hora"/></set>
+                                <set var="contador"><map name="successor"><get var="contador"/></map></set>
+                                <set var="iterador"><srai> NEXT </srai></set>
+                                <loop/>
+                            </li>
+                            <li>
+                                <set var="contador"><map name="successor"><get var="contador"/></map></set>
+                                <set var="iterador"><srai> NEXT </srai></set>
+                                <loop/>
+                            </li>
+                        </condition>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Devolver horas disponibles por la tarde en un dia-->
+    <category>
+        <pattern> HORAS LIBRES POR LA TARDE * </pattern>
+        <template>
+            <think>
+                <set var="disponibilidad"><srai> LIBRE POR LA TARDE <star/></srai></set>
+                <condition var="disponibilidad">
+                    <li value="FALSE">
+                        <set var="resultado"> EMPTYLIST </set>
+                    </li>
+                    <li>
+                        <set var="lista_horas"><srai> LIST OF DAY <star/></srai></set>
+                        <set var="lista_horas"><srai> SUBLIST FROM 14 TO 21 OF <get var="lista_horas"/></srai></set>
+                        <set var="iterador"><srai> ITERATE <get var="lista_horas"/></srai></set>
+                        <set var="resultado"> </set>
+                        <set var="contador">13</set>
+
+                        <condition var="iterador">
+                            <li value="$"></li>
+                            <li value="LIBRE">
+                                <set var="hora"><srai> <get var="contador"/> A HORA </srai></set>
+                                <set var="resultado"><get var="resultado"/> <get var="hora"/></set>
+                                <set var="contador"><map name="successor"><get var="contador"/></map></set>
+                                <set var="iterador"><srai> NEXT </srai></set>
+                                <loop/>
+                            </li>
+                            <li>
+                                <set var="contador"><map name="successor"><get var="contador"/></map></set>
+                                <set var="iterador"><srai> NEXT </srai></set>
+                                <loop/>
+                            </li>
+                        </condition>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <!-- Reglas conversacionales -->
+    <category>
+        <pattern> ^ [CITA RESERV+] PARA EL (DIA) * DE * DEL * </pattern>
+        <template>
+            <think>
+                <set name="fecha"><srai> CONVERTIR <star index="2"/> DE <star index="3"/> DEL <star index="4"/> </srai></set>
+                <set var="resultado"><srai> LIBRE <get name="fecha"/> </srai></set>
+                <condition var="resultado">
+                    <li value="FALSE">
+                        <set var="resultado"> Lo siento pero ese dia esta ocupado, quiere otro dia? </set>
+                        <set name="topic">cita_no_disponible_nivel</set>
+                    </li>
+                    <li>
+                        <set var="resultado"> El dia dispone de horas libres, quiere verlas? </set>
+                        <set name="topic">cita_disponible_nivel</set>
+                    </li>
+                </condition>
+            </think>
+            <get var="resultado"/>
+        </template>
+    </category>
+
+    <topic name="cita_no_disponible_nivel">
+        <category>
+            <pattern> SI </pattern>
+            <template> Para que dia quiere la cita? </template>
+        </category>
+
+        <category>
+            <pattern> NO </pattern>
+            <template> Hasta la proxima </template>
+        </category>
+    </topic>
+
+    <topic name="cita_disponible_nivel">
+        <category>
+            <pattern> SI </pattern>
+            <template>
+                <think>
+                    <set var="solo_libre_manyana"><srai> HORAS LIBRES POR LA MANYANA <get name="fecha"/> </srai></set>
+                    <set var="solo_libre_tarde"><srai> HORAS LIBRES POR LA TARDE <get name="fecha"/> </srai></set>
+                    <set var="disponibilidad"> </set>
+
+                    <condition var="solo_libre_manyana">
+                        <li value="EMPTYLIST"></li>
+                        <li>
+                            <set var="disponibilidad">manyana</set>
+                        </li>
+                    </condition>
+
+                    <condition var="solo_libre_tarde">
+                        <li value="EMPTYLIST"></li>
+                        <li>
+                            <set var="disponibilidad"><get var="disponibilidad"/>tarde</set>
+                        </li>
+                    </condition>
+
+                    <condition var="disponibilidad">
+                        <li value="manyana">
+                            <set var="resultado"> Solo tengo horas libres por la manyana. Estas son las horas: <srai> HORAS LIBRES POR LA MANYANA <get name="fecha"/> </srai> </set>
+                        </li>
+                        <li value="tarde">
+                            <set var="resultado"> Solo tengo horas libres por la tarde. Estas son las horas: <srai> HORAS LIBRES POR LA TARDE <get name="fecha"/> </srai> </set>
+                        </li>
+                        <li>
+                            <set var="resultado"> Tengo horas libres tanto por la manyana como por la tarde. Estas son las horas: <srai> HORAS LIBRES <get name="fecha"/> </srai> </set>
+                        </li>
+                    </condition>
+                    <set name="topic">eleccion_hora</set>
+                </think>
+                <get var="resultado"/>, que hora quiere?
+            </template>
+        </category>
+        
+        <category>
+            <pattern> NO </pattern>
+            <template> Hasta la proxima </template>
+        </category>
+    </topic>
+
+    <topic name="eleccion_hora">
+        <category>
+            <pattern> ^ A LAS * </pattern>
+            <template>
+                <think>
+                    <set var="ocupado"><srai> IS BUSY DAY <get name="fecha"/> AT <star index="2"/></srai></set>
+                    <set var="hora_valida"><srai> HORA VALIDA <star index="2"/></srai></set>
+                    <condition var="ocupado">
+                        <li value="TRUE">
+                            <set var="resultado"> La hora no esta disponible para este dia, le recuerdo que las horas disponibles son: <srai> HORAS LIBRES <get name="fecha"/></srai> </set>
+                            <set name="topic">eleccion_hora</set>
+                        </li>
+                        <li>
+                            <condition var="hora_valida">
+                                <li value="TRUE">
+                                    <set var="resultado"> Se ha reservado la cita a las <star index="2"/></set>
+                                    <srai> MARK NOLIBRE AT <star index="2"/> ON <get name="fecha"/> </srai>
+                                </li>
+                                <li>
+                                    <set var="resultado"> La hora no esta disponible para este dia, le recuerdo que las horas disponibles son: <srai> HORAS LIBRES <get name="fecha"/></srai> </set>
+                                    <set name="topic">eleccion_hora</set>
+                                </li>
+                            </condition>
+                        </li>
+                    </condition>
+                </think>
+                <get var="resultado"/>
+            </template>
+        </category>
+
+        <category>
+            <pattern> Me da igual </pattern>
+            <template>
+                <think>
+                    <set var="hora"><srai> PRIMERA HORA LIBRE DE <get name="fecha"/></srai></set>
+                    <condition var="hora">
+                        <li value="NULL">
+                            <set var="resultado"> No quedan mas horas libres </set>
+                        </li>
+                        <li>
+                            <srai> MARK NOLIBRE AT <get var="hora"/> ON <get name="fecha"/></srai>
+                            <set var="resultado"> Se ha reservado la cita a las <get var="hora"/></set>
+                        </li>
+                    </condition>
+                </think>
+                <get var="resultado"/>
+            </template>
+        </category>
+
+        <category>
+            <pattern> No me importa </pattern>
+            <template>
+                <think>
+                    <set var="hora"><srai> PRIMERA HORA LIBRE DE <get name="fecha"/></srai></set>
+                    <condition var="hora">
+                        <li value="NULL">
+                            <set var="resultado"> No quedan mas horas libres </set>
+                        </li>
+                        <li>
+                            <srai> MARK NOLIBRE AT <get var="hora"/> ON <get name="fecha"/></srai>
+                            <set var="resultado"> Se ha reservado la cita a las <get var="hora"/></set>
+                        </li>
+                    </condition>
+                </think>
+                <get var="resultado"/>
+            </template>
+        </category>
+    </topic>
+    
+
+</aiml>
