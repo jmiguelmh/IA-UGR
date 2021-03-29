@@ -9,7 +9,7 @@
 
     <!-- Regla 2 -->
     <category>
-        <pattern> ^ FASE ^ DIA ESTAMOS ^ </pattern>
+        <pattern> ^ FASE ^ DIA ^ </pattern>
         <template> Es por la <srai> DAY PHASE </srai></template>
     </category>
 
@@ -40,7 +40,7 @@
 
     <!-- Regla 4 -->
     <category>
-        <pattern> ^ FECHA ^ [DENTRO EN DE] ^ UNA SEMANA </pattern>
+        <pattern> ^ FECHA ^ [DENTRO EN] ^ UNA SEMANA </pattern>
         <template> Dentro de una semana es <srai> DATE IN 7 DAYS</srai></template>
     </category>
 
