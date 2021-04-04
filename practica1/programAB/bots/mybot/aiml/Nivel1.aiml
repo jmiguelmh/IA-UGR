@@ -2,6 +2,35 @@
 <aiml version="2.0">
 
     <!-- Funciones -->
+    <!-- Función para convertir los días con un solo dígito en 2 -->
+    <category>
+
+	<pattern>DAY2TWODIGITS <set>number</set></pattern>
+
+        <template>
+
+            <think>
+
+            <set var="salida"><star/></set>
+
+            <set var="digit"><srai>DELETREA <star/></srai></set>
+
+            <set var="long"><srai>COUNT <get var="digit"/></srai></set>
+
+            <condition var="long">
+
+                <li value="1"><set var="salida">0<get var="digit"/></set></li>
+
+            </condition>
+
+            </think>
+
+            <get var="salida"/>
+
+        </template>
+
+    </category> 
+    
     <!-- Convertir formato DD_MMMMMMMMM_YY a DD_MM_YY -->
     <category>
         <pattern> CONVERTIR * DE * DEL * </pattern>
@@ -274,7 +303,7 @@
         <pattern> ^ [CITA RESERV+] PARA EL (DIA) * DE * DEL * </pattern>
         <template>
             <think>
-                <set name="fecha"><srai> CONVERTIR <star index="2"/> DE <star index="3"/> DEL <star index="4"/> </srai></set>
+                <set name="fecha"><srai> CONVERTIR <srai> DAY2TWODIGITS <star index="2"/></srai> DE <star index="3"/> DEL <star index="4"/> </srai></set>
                 <set var="resultado"><srai> LIBRE <get name="fecha"/> </srai></set>
                 <condition var="resultado">
                     <li value="FALSE">
