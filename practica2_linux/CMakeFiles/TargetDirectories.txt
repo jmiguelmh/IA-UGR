@@ -1,0 +1,9 @@
+/home/jmiguelmh/Escritorio/practica2_linux/CMakeFiles/rebuild_cache.dir
+/home/jmiguelmh/Escritorio/practica2_linux/CMakeFiles/edit_cache.dir
+/home/jmiguelmh/Escritorio/practica2_linux/CMakeFiles/BelkanSG.dir
+/home/jmiguelmh/Escritorio/practica2_linux/CMakeFiles/Belkan.dir
+/home/jmiguelmh/Escritorio/practica2_linux/CMakeFiles/motorLib.dir
+/home/jmiguelmh/Escritorio/practica2_linux/CMakeFiles/GLUILib.dir
+/home/jmiguelmh/Escritorio/practica2_linux/CMakeFiles/comportamientosLib.dir
+/home/jmiguelmh/Escritorio/practica2_linux/CMakeFiles/modelosBelkanLib.dir
+/home/jmiguelmh/Escritorio/practica2_linux/CMakeFiles/obj3DLib.dir
