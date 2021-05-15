@@ -34,6 +34,10 @@ motorlib.hpp
 unistd.h
 -
 
+/home/jmiguelmh/Escritorio/practica2_linux/src/motorlib/util.cpp
+motorlib/util.h
+/home/jmiguelmh/Escritorio/practica2_linux/src/motorlib/motorlib/util.h
+
 Comportamientos_Jugador/aldeano.hpp
 chrono
 -
