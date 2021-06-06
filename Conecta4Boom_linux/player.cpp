@@ -58,138 +58,94 @@ double ValoracionTest(const Environment &estado, int jugador)
 // ------------------- Los tres metodos anteriores no se pueden modificar
 
 // Funcion heuristica (ESTA ES LA QUE TENEIS QUE MODIFICAR)
+double consecutivas(const Environment &estado, int jugador)
+{
+   double puntuacion = 0.0;
+   int consecutivas3 = 0;
+   int consecutivas2 = 0;
 
-int encuentraConsecutivasVerticales(int fila, int columna, const Environment &estado,int nConsecutivas){
-    int cuenta_consec = 0;
-    bool sigue = true;
+   // Consecutivas horizontales
+   for(int fila = 0; fila < 7; fila++)
+   {
+      // Comprobando 3 en linea
+      for(int columna = 0; columna < 5; columna++)
+         if(estado.See_Casilla(fila,columna) == jugador && estado.See_Casilla(fila,columna+1) == jugador && estado.See_Casilla(fila,columna+2) == jugador)
+            consecutivas3++;
 
-    if(fila + nConsecutivas - 1 < 7){ //Para saber cuando has llegado al tope de las filas
-      for (int i = 0; i < nConsecutivas && sigue; i++){
-        if (estado.See_Casilla(fila,columna) == estado.See_Casilla((fila+i),columna)){
-          cuenta_consec++;
-        }else{
-          sigue = false;
-        }
-      }
-    }
+      // Comprobando 2 en linea
+      for(int columna = 0; columna < 6; columna++)
+         if(estado.See_Casilla(fila,columna) == jugador && estado.See_Casilla(fila,columna+1) == jugador)
+            consecutivas2++;
+   }
 
-    if (cuenta_consec == nConsecutivas){
-      return 1;
-    }else{
-      return 0;
-    }
+   // Consecutivas en vertical
+   for(int columna = 0; columna < 7; columna++)
+   {
+      // Comprobando 3 en linea
+      for(int fila = 0; fila < 5; fila++)
+         if(estado.See_Casilla(fila,columna) == jugador && estado.See_Casilla(fila+1,columna) == jugador && estado.See_Casilla(fila+2,columna) == jugador)
+            consecutivas3++;
 
+      // Comprobando 2 en linea
+      for(int fila = 0; fila < 6; fila++)
+         if(estado.See_Casilla(fila,columna) == jugador && estado.See_Casilla(fila+1,columna) == jugador)
+            consecutivas2++;
+   }
+
+   // Consecutivas en diagonal (arriba derecha)
+   // Comprobando 3 en linea
+   for(int fila = 0; fila < 5; fila++)
+      for(int columna = 0; columna < 5; columna++)
+         if(estado.See_Casilla(fila,columna) == jugador && estado.See_Casilla(fila+1,columna+1) == jugador && estado.See_Casilla(fila+2,columna+2) == jugador)
+            consecutivas3++;
+   
+   // Comprobando 2 en linea
+   for(int fila = 0; fila < 6; fila++)
+      for(int columna = 0; columna < 6; columna++)
+         if(estado.See_Casilla(fila,columna) == jugador && estado.See_Casilla(fila+1,columna+1) == jugador)
+            consecutivas2++;
+
+   //Consecutivas en diagonal (arriba izquierda)
+   // Comprobando 3 en linea
+   for(int fila = 2; fila < 7; fila++)
+      for(int columna = 2; columna < 7; columna++)
+         if(estado.See_Casilla(fila,columna) == jugador && estado.See_Casilla(fila-1,columna-1) == jugador && estado.See_Casilla(fila-2,columna-2) == jugador)
+            consecutivas3++;
+   
+   // Comprobando 2 en linea
+   for(int fila = 1; fila < 7; fila++)
+      for(int columna = 1; columna < 7; columna++)
+         if(estado.See_Casilla(fila,columna) == jugador && estado.See_Casilla(fila-1,columna-1) == jugador)
+            consecutivas2++;
+
+   puntuacion = 1000*consecutivas3 + 10*consecutivas2;
+   return puntuacion;
 }
 
-int encuentraConsecutivasHorizontales(int fila, int columna, const Environment &estado,int nConsecutivas){
-  int cuenta_consec = 0;
-  bool sigue = true;
+double posicionFichas(const Environment &estado, int jugador)
+{
+   double conexiones4[7][7] = {{3,4,5,7,5,4,3},
+                               {4,6,8,10,8,6,4},
+                               {5,8,11,13,11,8,5},
+                               {7,10,13,16,13,10,7},
+                               {5,8,11,13,11,8,5},
+                               {4,6,8,10,8,6,4},
+                               {3,4,5,7,5,4,3}};
 
-  if(columna + nConsecutivas - 1 < 7){ //Para saber si es posible ver las consecutivas sin salirse
-    for (int i = 0; i < nConsecutivas && sigue; i++){
-      if (estado.See_Casilla(fila,columna) == estado.See_Casilla(fila,(columna+i))){
-        cuenta_consec++;
-      }else{
-          sigue = false;
-      }
-    }
-  }
+   double puntuacion = 0.0;
+   int posiblesConexiones = 0;
 
-  if (cuenta_consec == nConsecutivas){
-    return 1;
-  }else{
-    return 0;
-  }
-
-}
-
-int encuentraConsecutivasDiagonales(int fila, int columna, const Environment &estado,int nConsecutivas){
-
-  int total = 0;
-  int auxfila, auxcolumna;
-
-  auxfila = fila;
-  auxcolumna = columna;
-
-  int cuenta_consec = 0;
-  bool sigue = true;
-
-  if(fila + nConsecutivas - 1 < 7 && columna + nConsecutivas - 1 < 7){ //Para saber si se puede comprobar las consecutivas
-    for (int i = 0; i < nConsecutivas && sigue; i++){
-      //ARRIBA A LA DERECHA
-      if (estado.See_Casilla(auxfila, auxcolumna) == estado.See_Casilla((auxfila+i),(auxcolumna+i))){
-        cuenta_consec++;
-      }else{
-        sigue = false;
-      }
-    }
-  }
-
-  if (cuenta_consec == nConsecutivas){
-    total++;
-  }
-
-  cuenta_consec = 0;
-  sigue = true;
-  auxfila = fila;
-  auxcolumna = columna;
-
-  if(fila - nConsecutivas + 1 >= 0 && columna + nConsecutivas - 1 < 7){
-    for (int i = 0; i < nConsecutivas && sigue; i++){
-      //ABAJO A LA DERECHA
-      if (estado.See_Casilla(auxfila, auxcolumna) == estado.See_Casilla((auxfila-i),(auxcolumna+i))){
-        cuenta_consec++;
-      }else{
-        sigue = false;
-      }
-    }
-  }
-
-  if (cuenta_consec == nConsecutivas){
-    total++;
-  }
-
-  return total;
-
-}
-
-double encuentraConsecutivas(const Environment &estado, int jugador, int nConsecutivas){
-    int contador = 0;
-
-    for (int i = 0; i < 7; i++){
-      for (int j = 0; j < 7; j++){
-        if (estado.See_Casilla(i,j) == jugador){
-          //Buscamos consecutivas verticales para [i][j]
-          contador += encuentraConsecutivasVerticales(i, j, estado, nConsecutivas);
-          //Buscamos consecutivas horizontales para [i][j]
-          contador += encuentraConsecutivasHorizontales(i, j, estado, nConsecutivas);
-          //Buscamos consecutivas diagonales para [i][j]
-          contador += encuentraConsecutivasDiagonales(i, j, estado, nConsecutivas);
-        }
-      }
-    }
-
-
-    return contador;
+   for(int fila = 0; fila < 7; fila++)
+      for(int columna = 0; columna < 7; columna++)
+         if(estado.See_Casilla(fila,columna) == jugador)
+            posiblesConexiones += conexiones4[fila][columna];
+   
+   puntuacion = 10000*posiblesConexiones;
+   return puntuacion;
 }
 
 double Valoracion(const Environment &estado, int jugador)
 {
-   int rival;
-   if(jugador == 1)
-      rival = 2;
-   else
-      rival = 1;
-
-   int tableroEvaluacion[7][7] = {{3,4,5,7,5,4,3},
-                                  {4,6,8,10,8,6,4},
-                                  {5,8,11,13,11,8,5},
-                                  {7,10,13,16,13,10,7},
-                                  {5,8,11,13,11,8,5},
-                                  {4,6,8,10,8,6,4},
-                                  {3,4,5,7,5,4,3},
-                                 };
-
    if(estado.JuegoTerminado())
    {
       if(estado.RevisarTablero() == jugador)
@@ -197,28 +153,18 @@ double Valoracion(const Environment &estado, int jugador)
       else
          return menosinf;
    } else {
-      double puntuacion = 0.0, conexionesJugador, conexionesRival;
-      int fila, columna;
+      int rival = 1;
+      if(jugador == 1)
+         rival = 2;
+      
+      double puntuacionJugador = consecutivas(estado,jugador);
+      double puntuacionRival = consecutivas(estado,rival);
+      double posicionFichasJugador = posicionFichas(estado,jugador);
+      double posicionFichasRival = posicionFichas(estado,rival);
 
-      for(fila = 0; fila < 7; fila++)
-      {
-         for(columna = 0; columna < 7; columna++)
-         {
-            if(estado.See_Casilla(fila,columna) == jugador)
-               puntuacion += tableroEvaluacion[fila][columna];
-            else if(estado.See_Casilla(fila,columna) == rival)
-               puntuacion -= tableroEvaluacion[fila][columna];
-         }         
-      }
-
-      puntuacion = 0.0;
-      conexionesJugador = encuentraConsecutivas(estado, jugador, 2) + encuentraConsecutivas(estado, jugador, 3);
-      conexionesRival = encuentraConsecutivas(estado, rival, 2) + encuentraConsecutivas(estado, rival, 3);
-      puntuacion += conexionesJugador;
-      puntuacion -= conexionesRival;
-
-      return puntuacion;
+      return (puntuacionJugador + posicionFichasJugador - puntuacionRival - posicionFichasRival);
    }
+   
 }
 
 // Esta funcion no se puede usar en la version entregable
@@ -311,19 +257,19 @@ Environment::ActionType Player::Think()
 
 void CalculaMax(double &max, double valor, Environment::ActionType &accion, int mejorMovimiento)
 {
-   if(valor > max)
+   if (valor > max)
    {
       max = valor;
-      accion = static_cast< Environment::ActionType > (mejorMovimiento);
+      accion = static_cast<Environment::ActionType>(mejorMovimiento);
    }
 }
 
 void CalculaMin(double &min, double valor, Environment::ActionType &accion, int mejorMovimiento)
 {
-   if(valor < min)
+   if (valor < min)
    {
       min = valor;
-      accion = static_cast< Environment::ActionType > (mejorMovimiento);
+      accion = static_cast<Environment::ActionType>(mejorMovimiento);
    }
 }
 
@@ -333,33 +279,37 @@ double Player::podaAlfaBeta(const Environment &actual, int jugador, int profundi
    int movimientosPosibles = actual.possible_actions(movimientos);
    Environment::ActionType accionAnterior;
 
-   if(actual.JuegoTerminado() || movimientosPosibles == 0 || profundidad == 0)
+   if (actual.JuegoTerminado() || movimientosPosibles == 0 || profundidad == 0)
    {
-      return Valoracion(actual,jugador);
-   } else {
+      return Valoracion(actual, jugador);
+   }
+   else
+   {
       int mejorMovimiento = -1;
       Environment tablero = actual.GenerateNextMove(mejorMovimiento);
 
-      if(jugador == actual.JugadorActivo())
+      if (jugador == actual.JugadorActivo())
       {
          int contador = 0;
 
-         while(contador < movimientosPosibles && beta > alpha)
+         while (contador < movimientosPosibles && beta > alpha)
          {
             contador++;
-            double valor = podaAlfaBeta(tablero, jugador, profundidad-1, accionAnterior, alpha, beta);
+            double valor = podaAlfaBeta(tablero, jugador, profundidad - 1, accionAnterior, alpha, beta);
             CalculaMax(alpha, valor, accion, mejorMovimiento);
             tablero = actual.GenerateNextMove(mejorMovimiento);
          }
 
          return alpha;
-      } else {
+      }
+      else
+      {
          int contador = 0;
 
-         while(contador < movimientosPosibles && beta > alpha)
+         while (contador < movimientosPosibles && beta > alpha)
          {
             contador++;
-            double valor = podaAlfaBeta(tablero, jugador, profundidad-1, accionAnterior, alpha, beta);
+            double valor = podaAlfaBeta(tablero, jugador, profundidad - 1, accionAnterior, alpha, beta);
             CalculaMin(beta, valor, accion, mejorMovimiento);
             tablero = actual.GenerateNextMove(mejorMovimiento);
          }
@@ -368,4 +318,3 @@ double Player::podaAlfaBeta(const Environment &actual, int jugador, int profundi
       }
    }
 }
-
